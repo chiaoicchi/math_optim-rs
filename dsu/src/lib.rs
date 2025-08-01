@@ -1,3 +1,4 @@
+pub mod potential_dsu;
 /// disjoint set union.
 ///
 /// # Example

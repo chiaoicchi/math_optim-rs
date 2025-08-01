@@ -3,9 +3,20 @@
 version = 4
 
 [[package]]
+name = "algebra"
+version = "0.1.0"
+
+[[package]]
 name = "dsu"
 version = "0.1.0"
+dependencies = [
+ "algebra",
+]
 
 [[package]]
 name = "math_optim-rs"
 version = "0.1.0"
+dependencies = [
+ "algebra",
+ "dsu",
+]
