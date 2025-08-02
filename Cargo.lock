@@ -32,4 +32,12 @@ dependencies = [
  "bitree",
  "dsu",
  "gf",
+ "segtree",
+]
+
+[[package]]
+name = "segtree"
+version = "0.1.0"
+dependencies = [
+ "algebra",
 ]
