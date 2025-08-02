@@ -1,4 +1,4 @@
-use algebra::group::Group;
+use algebra::Group;
 /// potential disjoint set union.
 ///
 /// # Example
