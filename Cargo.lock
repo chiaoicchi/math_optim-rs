@@ -7,8 +7,11 @@ name = "algebra"
 version = "0.1.0"
 
 [[package]]
-name = "conv"
+name = "bitree"
 version = "0.1.0"
+dependencies = [
+ "algebra",
+]
 
 [[package]]
 name = "dsu"
@@ -16,10 +19,6 @@ version = "0.1.0"
 dependencies = [
  "algebra",
 ]
-
-[[package]]
-name = "fps"
-version = "0.1.0"
 
 [[package]]
 name = "gf"
@@ -30,8 +29,7 @@ name = "math_optim-rs"
 version = "0.1.0"
 dependencies = [
  "algebra",
- "conv",
+ "bitree",
  "dsu",
- "fps",
  "gf",
 ]

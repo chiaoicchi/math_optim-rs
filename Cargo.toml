@@ -6,11 +6,13 @@ edition = "2024"
 [workspace]
 members = [
     "algebra",
+    "bitree",
     "dsu", 
     "gf",
 ]
 
 [dependencies]
 algebra = { path = "algebra" }
+bitree = { path = "bitree" }
 dsu = { path = "dsu" }
 gf = { path = "gf" }
