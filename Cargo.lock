@@ -7,6 +7,10 @@ name = "algebra"
 version = "0.1.0"
 
 [[package]]
+name = "conv"
+version = "0.1.0"
+
+[[package]]
 name = "dsu"
 version = "0.1.0"
 dependencies = [
@@ -14,9 +18,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "fps"
+version = "0.1.0"
+
+[[package]]
+name = "gf"
+version = "0.1.0"
+
+[[package]]
 name = "math_optim-rs"
 version = "0.1.0"
 dependencies = [
  "algebra",
+ "conv",
  "dsu",
+ "fps",
+ "gf",
 ]
