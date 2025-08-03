@@ -28,3 +28,29 @@ pub fn inversions<T: Copy + PartialOrd>(a: &[T]) -> usize {
         res
     }
 }
+/// Return longest increasing subsequence size and its example.
+/// This function has time complexity of O(n log n).
+pub fn lis<T: Copy + PartialOrd>(a: &[T], inf: T) -> (usize, Vec<usize>) {
+    let n = a.len();
+    let mut dp = vec![inf; n + 1];
+    let mut f = vec![];
+    a.iter().for_each(|a| {
+        let pos = dp.partition_point(|dp| dp < a);
+        dp[pos] = *a;
+        f.push(pos);
+    });
+    let mut lis = vec![];
+    let mut pos = dp.iter().rposition(|dp| *dp < inf).unwrap();
+    for (i, f) in f.iter().enumerate().rev() {
+        if *f == pos {
+            lis.push(i);
+            if pos == 0 {
+                break;
+            } else {
+                pos -= 1;
+            }
+        }
+    }
+    lis.reverse();
+    (lis.len(), lis)
+}
