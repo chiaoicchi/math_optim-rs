@@ -11,7 +11,7 @@ members = [
     "gf",
     "intalgo",
     "segtree",
-    "rle",
+    "seqalgo",
 ]
 
 [dependencies]
@@ -21,4 +21,4 @@ dsu = { path = "dsu" }
 gf = { path = "gf" }
 intalgo = { path = "intalgo" }
 segtree = { path = "segtree" }
-rle = { path = "rle" }
+seqalgo = { path = "seqalgo" }

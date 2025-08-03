@@ -37,13 +37,9 @@ dependencies = [
  "dsu",
  "gf",
  "intalgo",
- "rle",
  "segtree",
+ "seqalgo",
 ]
-
-[[package]]
-name = "rle"
-version = "0.1.0"
 
 [[package]]
 name = "segtree"
@@ -51,3 +47,7 @@ version = "0.1.0"
 dependencies = [
  "algebra",
 ]
+
+[[package]]
+name = "seqalgo"
+version = "0.1.0"
