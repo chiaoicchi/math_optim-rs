@@ -1,4 +1,5 @@
 pub mod dual;
+pub mod lazy;
 use algebra::Monoid;
 /// Segment Tree
 ///
@@ -21,7 +22,7 @@ impl<T: Monoid> SegTree<T> {
         Self {
             n,
             m,
-            vals: vec![T::e(); 2 * m],
+            vals: vec![T::E; 2 * m],
         }
     }
     /// Update `i` th, from `a_i` to `x`.
@@ -56,8 +57,8 @@ impl<T: Monoid> SegTree<T> {
             Included(x) => x + 1,
             Excluded(x) => *x,
         } + self.m;
-        let mut left = T::e();
-        let mut right = T::e();
+        let mut left = T::E;
+        let mut right = T::E;
         while l < r {
             if l & 1 == 1 {
                 left = T::op(&left, &self.vals[l]);
@@ -81,7 +82,7 @@ impl<T: Monoid> FromIterator<T::S> for SegTree<T> {
         let a = iter.into_iter().collect::<Vec<_>>();
         let n = a.len();
         let m = n.next_power_of_two();
-        let mut vals = vec![T::e(); 2 * m];
+        let mut vals = vec![T::E; 2 * m];
         vals[m..m + n].clone_from_slice(&a);
         (1..m)
             .rev()

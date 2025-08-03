@@ -35,7 +35,7 @@ impl<T: MonoidAction> DualSegTree<T> {
             m,
             k: m.trailing_zeros(),
             vals: vec![ini.clone(); n],
-            maps: vec![T::e(); 2 * m],
+            maps: vec![T::E; 2 * m],
         }
     }
     /// Return `a_i`.
@@ -66,12 +66,12 @@ impl<T: MonoidAction> DualSegTree<T> {
         // If monoid action is commutative, this propagation is not needed.
         (1..=self.k).rev().for_each(|i| {
             if (l >> i) << i != l {
-                let g = replace(&mut self.maps[l >> i], T::e());
+                let g = replace(&mut self.maps[l >> i], T::E);
                 self.maps[2 * (l >> i)] = T::op(&self.maps[2 * (l >> i)], &g);
                 self.maps[2 * (l >> i) + 1] = T::op(&self.maps[2 * (l >> i) + 1], &g);
             }
             if (r >> i) << i != r {
-                let g = replace(&mut self.maps[(r - 1) >> i], T::e());
+                let g = replace(&mut self.maps[(r - 1) >> i], T::E);
                 self.maps[2 * ((r - 1) >> i)] = T::op(&self.maps[2 * ((r - 1) >> i)], &g);
                 self.maps[2 * ((r - 1) >> i) + 1] = T::op(&self.maps[2 * ((r - 1) >> i) + 1], &g);
             }
@@ -103,7 +103,7 @@ impl<T: MonoidAction> FromIterator<T::X> for DualSegTree<T> {
             m,
             k: m.trailing_zeros(),
             vals: a,
-            maps: vec![T::e(); 2 * m],
+            maps: vec![T::E; 2 * m],
         }
     }
 }

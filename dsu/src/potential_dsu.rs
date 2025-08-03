@@ -18,7 +18,7 @@ impl<T: Group> PotentialDSU<T> {
     pub fn new(n: usize) -> Self {
         Self {
             parents: vec![-1; n],
-            potentials: vec![T::e(); n],
+            potentials: vec![T::E; n],
             count: n,
         }
     }

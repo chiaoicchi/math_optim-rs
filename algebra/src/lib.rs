@@ -7,7 +7,7 @@
 ///
 pub trait Monoid {
     type S: Clone;
-    fn e() -> Self::S;
+    const E: Self::S;
     fn op(lhs: &Self::S, rhs: &Self::S) -> Self::S;
 }
 /// group trait.
@@ -19,7 +19,7 @@ pub trait Monoid {
 ///
 pub trait Group {
     type S: Clone + PartialEq;
-    fn e() -> Self::S;
+    const E: Self::S;
     fn op(lhs: &Self::S, rhs: &Self::S) -> Self::S;
     fn inv(val: &Self::S) -> Self::S;
 }

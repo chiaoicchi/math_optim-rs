@@ -16,7 +16,7 @@ impl<T: Monoid> BITree<T> {
     pub fn new() -> Self {
         Self {
             n: 1,
-            vals: vec![T::e()],
+            vals: vec![T::E],
         }
     }
     /// Push `x` to `BIT`.
@@ -46,7 +46,7 @@ impl<T: Monoid> BITree<T> {
         successors(Some(i), |i| Some(i - (i & i.wrapping_neg())))
             .take_while(|i| *i != 0)
             .map(|i| &self.vals[i])
-            .fold(T::e(), |acc, a| T::op(&acc, &a))
+            .fold(T::E, |acc, a| T::op(&acc, &a))
     }
 }
 /// Constructor from iter to `BIT`.
@@ -56,7 +56,7 @@ impl<T: Monoid> FromIterator<T::S> for BITree<T> {
     fn from_iter<I: IntoIterator<Item = T::S>>(iter: I) -> BITree<T> {
         let a = iter.into_iter().collect::<Vec<_>>();
         let n = a.len();
-        let mut vals = vec![T::e(); n + 1];
+        let mut vals = vec![T::E; n + 1];
         for (i, a) in a.iter().enumerate() {
             let i = i + 1;
             vals[i] = T::op(&vals[i], a);
