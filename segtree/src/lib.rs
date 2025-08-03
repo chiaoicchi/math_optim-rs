@@ -1,3 +1,4 @@
+pub mod dual;
 use algebra::Monoid;
 /// Segment Tree
 ///
