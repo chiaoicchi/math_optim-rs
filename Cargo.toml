@@ -10,6 +10,7 @@ members = [
     "dsu", 
     "gf",
     "segtree",
+    "rle",
 ]
 
 [dependencies]
@@ -18,3 +19,4 @@ bitree = { path = "bitree" }
 dsu = { path = "dsu" }
 gf = { path = "gf" }
 segtree = { path = "segtree" }
+rle = { path = "rle" }
