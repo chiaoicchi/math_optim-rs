@@ -25,6 +25,10 @@ name = "gf"
 version = "0.1.0"
 
 [[package]]
+name = "intalgo"
+version = "0.1.0"
+
+[[package]]
 name = "math_optim-rs"
 version = "0.1.0"
 dependencies = [
@@ -32,6 +36,7 @@ dependencies = [
  "bitree",
  "dsu",
  "gf",
+ "intalgo",
  "rle",
  "segtree",
 ]

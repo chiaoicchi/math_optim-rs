@@ -9,6 +9,7 @@ members = [
     "bitree",
     "dsu", 
     "gf",
+    "intalgo",
     "segtree",
     "rle",
 ]
@@ -18,5 +19,6 @@ algebra = { path = "algebra" }
 bitree = { path = "bitree" }
 dsu = { path = "dsu" }
 gf = { path = "gf" }
+intalgo = { path = "intalgo" }
 segtree = { path = "segtree" }
 rle = { path = "rle" }
