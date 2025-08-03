@@ -7,6 +7,7 @@ edition = "2024"
 members = [
     "algebra",
     "bitree",
+    "chminmax",
     "dsu", 
     "gf",
     "intalgo",
@@ -17,6 +18,7 @@ members = [
 [dependencies]
 algebra = { path = "algebra" }
 bitree = { path = "bitree" }
+chminmax = { path = "chminmax" }
 dsu = { path = "dsu" }
 gf = { path = "gf" }
 intalgo = { path = "intalgo" }
