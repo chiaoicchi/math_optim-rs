@@ -17,3 +17,16 @@ pub fn divisors(n: u64) -> Vec<u64> {
     prefix.extend(suffix.iter().rev());
     prefix
 }
+/// Return a ^ n mod m.
+/// This function has a time complexity of O(log n).
+pub fn pow_mod(mut a: u64, n: u64, m: u64) -> u64 {
+    use std::iter::successors;
+    successors(Some(n), |i| Some(i >> 1))
+        .take_while(|i| *i > 0)
+        .fold(1, |acc, i| {
+            let res = if i & 1 == 1 { acc * a % m } else { acc };
+            a *= a;
+            a %= m;
+            res
+        })
+}
