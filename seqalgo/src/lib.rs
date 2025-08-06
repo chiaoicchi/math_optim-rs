@@ -28,7 +28,7 @@ pub fn inversions<T: Copy + PartialOrd>(a: &[T]) -> usize {
         res
     }
 }
-/// Return longest increasing subsequence size and its example.
+/// Return strictly longest increasing subsequence size and its example.
 /// This function has time complexity of O(n log n).
 pub fn lis<T: Copy + PartialOrd>(a: &[T], inf: T) -> (usize, Vec<usize>) {
     let n = a.len();

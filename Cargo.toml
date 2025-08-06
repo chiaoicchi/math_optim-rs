@@ -13,6 +13,7 @@ members = [
     "intalgo",
     "segtree",
     "seqalgo",
+    "slopetrick"
 ]
 
 [dependencies]
@@ -24,3 +25,4 @@ gf = { path = "gf" }
 intalgo = { path = "intalgo" }
 segtree = { path = "segtree" }
 seqalgo = { path = "seqalgo" }
+slopetrick = { path = "slopetrick" }
