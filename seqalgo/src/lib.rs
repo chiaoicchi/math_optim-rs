@@ -54,3 +54,15 @@ pub fn lis<T: Copy + PartialOrd>(a: &[T], inf: T) -> (usize, Vec<usize>) {
     lis.reverse();
     (lis.len(), lis)
 }
+/// Return compressed of sequence.
+/// This function has time complexity of O(n log n).
+pub fn compressed<T: Copy + PartialOrd>(a: &[T]) -> Vec<usize> {
+    let n = a.len();
+    let mut sorted = a.to_vec();
+    sorted.sort_unstable_by(|a, b| a.partial_cmp(b).unwrap());
+    sorted.dedup();
+    let mut compressed = Vec::with_capacity(n);
+    a.iter()
+        .for_each(|a| compressed.push(sorted.partition_point(|x| x < a)));
+    compressed
+}
