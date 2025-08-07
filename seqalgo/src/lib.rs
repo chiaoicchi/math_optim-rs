@@ -1,3 +1,4 @@
+pub mod rhash;
 pub mod rle;
 /// Return inversions of `a`.
 /// This function has time complexity of O(log n).
