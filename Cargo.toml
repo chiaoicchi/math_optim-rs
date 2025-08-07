@@ -10,6 +10,7 @@ members = [
     "chminmax",
     "dsu", 
     "gf",
+    "lca",
     "intalgo",
     "segtree",
     "seqalgo",
@@ -22,6 +23,7 @@ bitree = { path = "bitree" }
 chminmax = { path = "chminmax" }
 dsu = { path = "dsu" }
 gf = { path = "gf" }
+lca = { path = "lca" }
 intalgo = { path = "intalgo" }
 segtree = { path = "segtree" }
 seqalgo = { path = "seqalgo" }
