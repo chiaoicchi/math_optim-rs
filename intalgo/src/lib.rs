@@ -1,6 +1,6 @@
 pub mod eratos;
 pub mod gcd;
-pub mod is_prime;
+pub mod prime;
 /// Return all divisors.
 /// This function has a time complexity of O(sqrt n).
 pub fn divisors(n: u64) -> Vec<u64> {
