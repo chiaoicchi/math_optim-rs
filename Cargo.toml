@@ -12,11 +12,11 @@ members = [
     "dsu", 
     "gf",
     "graphalgo",
-    "lca",
     "intalgo",
     "segtree",
     "seqalgo",
-    "slopetrick"
+    "slopetrick",
+    "treealgo",
 ]
 
 [dependencies]
@@ -27,8 +27,8 @@ conv = { path = "conv" }
 dsu = { path = "dsu" }
 gf = { path = "gf" }
 graphalgo = { path = "graphalgo" }
-lca = { path = "lca" }
 intalgo = { path = "intalgo" }
 segtree = { path = "segtree" }
 seqalgo = { path = "seqalgo" }
 slopetrick = { path = "slopetrick" }
+treealgo = { path = "treealgo" }

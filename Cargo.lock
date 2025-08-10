@@ -45,10 +45,6 @@ name = "intalgo"
 version = "0.1.0"
 
 [[package]]
-name = "lca"
-version = "0.1.0"
-
-[[package]]
 name = "math_optim-rs"
 version = "0.1.0"
 dependencies = [
@@ -60,10 +56,10 @@ dependencies = [
  "gf",
  "graphalgo",
  "intalgo",
- "lca",
  "segtree",
  "seqalgo",
  "slopetrick",
+ "treealgo",
 ]
 
 [[package]]
@@ -79,4 +75,8 @@ version = "0.1.0"
 
 [[package]]
 name = "slopetrick"
+version = "0.1.0"
+
+[[package]]
+name = "treealgo"
 version = "0.1.0"
