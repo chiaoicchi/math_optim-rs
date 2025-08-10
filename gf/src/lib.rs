@@ -36,6 +36,11 @@ impl<const MOD: u32> GF<MOD> {
         assert_ne!(self.val, 0);
         self.pow(MOD - 2)
     }
+    /// Return the representative of Self.
+    /// This function has a time complexity of O(1).
+    pub fn rep(&self) -> u32 {
+        self.val
+    }
 }
 use std::fmt::{Debug, Display, Formatter, Result};
 impl<const MOD: u32> Debug for GF<MOD> {

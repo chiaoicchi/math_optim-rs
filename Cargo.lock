@@ -18,6 +18,14 @@ name = "chminmax"
 version = "0.1.0"
 
 [[package]]
+name = "conv"
+version = "0.1.0"
+dependencies = [
+ "gf",
+ "intalgo",
+]
+
+[[package]]
 name = "dsu"
 version = "0.1.0"
 dependencies = [
@@ -43,6 +51,7 @@ dependencies = [
  "algebra",
  "bitree",
  "chminmax",
+ "conv",
  "dsu",
  "gf",
  "intalgo",

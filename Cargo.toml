@@ -8,6 +8,7 @@ members = [
     "algebra",
     "bitree",
     "chminmax",
+    "conv",
     "dsu", 
     "gf",
     "lca",
@@ -21,6 +22,7 @@ members = [
 algebra = { path = "algebra" }
 bitree = { path = "bitree" }
 chminmax = { path = "chminmax" }
+conv = { path = "conv" }
 dsu = { path = "dsu" }
 gf = { path = "gf" }
 lca = { path = "lca" }
