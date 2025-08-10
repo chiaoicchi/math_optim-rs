@@ -11,6 +11,7 @@ members = [
     "conv",
     "dsu", 
     "gf",
+    "graphalgo",
     "lca",
     "intalgo",
     "segtree",
@@ -25,6 +26,7 @@ chminmax = { path = "chminmax" }
 conv = { path = "conv" }
 dsu = { path = "dsu" }
 gf = { path = "gf" }
+graphalgo = { path = "graphalgo" }
 lca = { path = "lca" }
 intalgo = { path = "intalgo" }
 segtree = { path = "segtree" }

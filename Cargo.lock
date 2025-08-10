@@ -37,6 +37,10 @@ name = "gf"
 version = "0.1.0"
 
 [[package]]
+name = "graphalgo"
+version = "0.1.0"
+
+[[package]]
 name = "intalgo"
 version = "0.1.0"
 
@@ -54,6 +58,7 @@ dependencies = [
  "conv",
  "dsu",
  "gf",
+ "graphalgo",
  "intalgo",
  "lca",
  "segtree",
