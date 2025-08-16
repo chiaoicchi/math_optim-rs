@@ -52,6 +52,7 @@ impl<T: Monoid> BITree<T> {
 }
 /// Constructor from iter to `BIT`.
 /// This function has a time complexity of O(n).
+use std::iter::FromIterator;
 impl<T: Monoid> FromIterator<T::S> for BITree<T> {
     #[inline]
     fn from_iter<I: IntoIterator<Item = T::S>>(iter: I) -> BITree<T> {

@@ -195,6 +195,7 @@ impl<T: MonoidAction2Monoid> LazySegTree<T> {
 }
 /// Constructor from iter to `DualSegTree`.
 /// This function has a time complexity of O(n).
+use std::iter::FromIterator;
 impl<T: MonoidAction2Monoid> FromIterator<T::X> for LazySegTree<T> {
     #[inline]
     fn from_iter<I: IntoIterator<Item = T::X>>(iter: I) -> LazySegTree<T> {

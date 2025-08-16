@@ -92,6 +92,7 @@ impl<T: MonoidAction> DualSegTree<T> {
 }
 /// Constructor from iter to `DualSegTree`.
 /// This function has a time complexity of O(n).
+use std::iter::FromIterator;
 impl<T: MonoidAction> FromIterator<T::X> for DualSegTree<T> {
     #[inline]
     fn from_iter<I: IntoIterator<Item = T::X>>(iter: I) -> DualSegTree<T> {
