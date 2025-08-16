@@ -13,7 +13,7 @@ pub struct GF<const MOD: u32> {
 impl<const MOD: u32> GF<MOD> {
     /// This is initializer of `GF`.
     /// This function has a time complexity of O(1).
-    pub fn new(val: u32) -> Self {
+    pub const fn new(val: u32) -> Self {
         Self { val: val % MOD }
     }
     /// Return `val.pow(exp) % MOD`.
