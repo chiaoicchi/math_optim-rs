@@ -35,8 +35,9 @@ impl<T: Monoid> BITree<T> {
     /// This function has a time complexity of O(log n).
     pub fn op_at(&mut self, i: usize, x: &T::S) {
         use std::iter::successors;
+        let n = self.n;
         successors(Some(i + 1), |i| Some(i + (i & i.wrapping_neg())))
-            .take_while(|&i| i < self.n)
+            .take_while(|&i| i < n)
             .for_each(|i| self.vals[i] = T::op(&self.vals[i], x));
     }
     /// Return op(a_0, ..., a_{i - 1}).
