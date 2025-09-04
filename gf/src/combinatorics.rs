@@ -43,6 +43,6 @@ impl<const MOD: u32> Combinatorics<MOD> {
     pub fn binom(&self, n: u32, r: u32) -> GF<MOD> {
         assert!(n < self.n);
         assert!(r <= n);
-        self.facts[n as usize] * self.facts[r as usize] * self.inv_facts[(n - r) as usize]
+        self.facts[n as usize] * self.inv_facts[r as usize] * self.inv_facts[(n - r) as usize]
     }
 }
