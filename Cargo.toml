@@ -10,9 +10,11 @@ members = [
     "chminmax",
     "conv",
     "dsu", 
+    "geometry",
     "gf",
     "graphalgo",
     "intalgo",
+    "parenthesis",
     "segtree",
     "seqalgo",
     "slopetrick",
@@ -25,9 +27,11 @@ bitree = { path = "bitree" }
 chminmax = { path = "chminmax" }
 conv = { path = "conv" }
 dsu = { path = "dsu" }
+geometry = { path = "geometry" }
 gf = { path = "gf" }
 graphalgo = { path = "graphalgo" }
 intalgo = { path = "intalgo" }
+parenthesis = { path = "parenthesis" }
 segtree = { path = "segtree" }
 seqalgo = { path = "seqalgo" }
 slopetrick = { path = "slopetrick" }

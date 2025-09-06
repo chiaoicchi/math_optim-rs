@@ -33,6 +33,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "geometry"
+version = "0.1.0"
+
+[[package]]
 name = "gf"
 version = "0.1.0"
 
@@ -53,14 +57,20 @@ dependencies = [
  "chminmax",
  "conv",
  "dsu",
+ "geometry",
  "gf",
  "graphalgo",
  "intalgo",
+ "parenthesis",
  "segtree",
  "seqalgo",
  "slopetrick",
  "treealgo",
 ]
+
+[[package]]
+name = "parenthesis"
+version = "0.1.0"
 
 [[package]]
 name = "segtree"

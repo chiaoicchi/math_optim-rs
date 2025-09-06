@@ -67,3 +67,21 @@ pub fn compressed<T: Copy + PartialOrd>(a: &[T]) -> Vec<usize> {
         .for_each(|a| compressed.push(sorted.partition_point(|x| x < a)));
     compressed
 }
+/// Return next index vector.
+/// res[pos][c] := index which is greater than or equal to pos s.t. c
+/// If there is no result, return |s|.
+/// Must be l <= s < r.
+/// This function has time complexity of O((r - l)|s|).
+pub fn next_pos(s: &[u8], l: u8, r: u8) -> Vec<Vec<usize>> {
+    let n = s.len();
+    let mut res = Vec::with_capacity(n);
+    let mut dp = vec![n; (r - l) as usize];
+    let mut tmp = vec![0; (r - l) as usize];
+    for (i, &c) in s.iter().enumerate().rev() {
+        dp[(c - l) as usize] = i;
+        tmp.copy_from_slice(&dp);
+        res.push(tmp.clone());
+    }
+    res.reverse();
+    res
+}

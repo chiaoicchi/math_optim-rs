@@ -46,7 +46,7 @@ pub fn is_prime(n: u64) -> bool {
 }
 // Return factorize of a.
 /// This function has a time complexity of O(n^1/4 log(n))
-use super::gcd::gcd;
+use super::gcd;
 pub fn factorize(mut a: u64) -> Vec<u64> {
     assert!(a > 0);
     let two = a.trailing_zeros();
