@@ -61,12 +61,17 @@ dependencies = [
  "gf",
  "graphalgo",
  "intalgo",
+ "matrix",
  "parenthesis",
  "segtree",
  "seqalgo",
  "slopetrick",
  "treealgo",
 ]
+
+[[package]]
+name = "matrix"
+version = "0.1.0"
 
 [[package]]
 name = "parenthesis"

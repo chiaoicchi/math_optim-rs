@@ -14,6 +14,7 @@ members = [
     "gf",
     "graphalgo",
     "intalgo",
+    "matrix",
     "parenthesis",
     "segtree",
     "seqalgo",
@@ -31,6 +32,7 @@ geometry = { path = "geometry" }
 gf = { path = "gf" }
 graphalgo = { path = "graphalgo" }
 intalgo = { path = "intalgo" }
+matrix = { path = "matrix" }
 parenthesis = { path = "parenthesis" }
 segtree = { path = "segtree" }
 seqalgo = { path = "seqalgo" }

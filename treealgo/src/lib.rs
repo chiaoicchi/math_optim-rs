@@ -1,3 +1,4 @@
+pub mod euler_tour;
 pub mod lca;
 /// Return tree diameter.
 /// This function has a time complexity of O(n).

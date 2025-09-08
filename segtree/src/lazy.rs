@@ -1,34 +1,18 @@
 use algebra::Monoid;
-/// monoid action.
-///
-/// # Example
-///
-/// ```
-/// ```
-///
-pub trait MonoidAction2Monoid: Monoid {
-    type X: Clone;
-    const E: Self::X;
-    fn op(lhs: &Self::X, rhs: &Self::X) -> Self::X;
-    fn apply(val: &mut Self::X, map: &Self::S);
+pub trait Action<V: Monoid, F: Monoid> {
+    fn apply(val: &mut <V as Monoid>::S, func: &<F as Monoid>::S);
 }
-/// Dual Segment Tree.
-///
-/// # Example
-///
-/// ```
-/// ```
-///
-pub struct LazySegTree<T: MonoidAction2Monoid> {
+/// Lazy Segment Tree.
+pub struct LazySegTree<V: Monoid, F: Monoid, A: Action<V, F>> {
     n: usize,
     m: usize,
     k: u32,
-    vals: Vec<T::X>,
-    maps: Vec<T::S>,
+    vals: Vec<<V as Monoid>::S>,
+    maps: Vec<<F as Monoid>::S>,
+    _marker: std::marker::PhantomData<A>,
 }
-use std::ops::RangeBounds;
-impl<T: MonoidAction2Monoid> LazySegTree<T> {
-    /// This is initilizer of `DualSegTree`.
+impl<V: Monoid, F: Monoid, A: Action<V, F>> LazySegTree<V, F, A> {
+    /// This is initilizer of `LazySegTree`.
     /// This function has a time complexity of O(n).
     pub fn new(n: usize) -> Self {
         let m = n.next_power_of_two();
@@ -36,183 +20,165 @@ impl<T: MonoidAction2Monoid> LazySegTree<T> {
             n,
             m,
             k: m.trailing_zeros(),
-            vals: vec![<T as MonoidAction2Monoid>::E; n],
-            maps: vec![<T as Monoid>::E; 2 * m],
+            vals: vec![<V as Monoid>::E; 2 * m],
+            maps: vec![<F as Monoid>::E; 2 * m],
+            _marker: std::marker::PhantomData,
         }
     }
-    /// Return `a_i`.
+    /// Return the value of index `i`.
     /// This function has a time complexity of O(log n).
-    pub fn get(&mut self, i: usize) -> T::X {
+    pub fn get(&mut self, i: usize) -> &<V as Monoid>::S {
         assert!(i < self.n);
-        use std::mem::replace;
         let i = i + self.m;
-        (1..=self.k).rev().for_each(|j| {
-            let f = replace(&mut self.maps[i >> j], <T as Monoid>::E);
-            T::apply(&mut self.vals[2 * (i >> j)], &f);
-            T::apply(&mut self.vals[2 * (i >> j) + 1], &f);
-            self.maps[2 * (i >> j)] = <T as Monoid>::op(&self.maps[2 * (i >> j)], &f);
-            self.maps[2 * (i >> j) + 1] = <T as Monoid>::op(&self.maps[2 * (i >> j) + 1], &f);
-        });
-        self.vals[i].clone()
+        for v in (1..=self.k).rev() {
+            self.push(i >> v);
+        }
+        &self.vals[i]
     }
-    pub fn update(&mut self, i: usize, x: &T::X) {
+    /// Update the value of index `i` to `x`.
+    /// This function has a time complexity of O(log n).
+    pub fn update(&mut self, i: usize, x: &<V as Monoid>::S) {
         assert!(i < self.n);
-        use std::mem::replace;
         let i = i + self.m;
-        (1..=self.k).rev().for_each(|j| {
-            let f = replace(&mut self.maps[i >> j], <T as Monoid>::E);
-            T::apply(&mut self.vals[2 * (i >> j)], &f);
-            self.maps[2 * (i >> j)] = <T as Monoid>::op(&self.maps[2 * (i >> j)], &f);
-            T::apply(&mut self.vals[2 * (i >> j) + 1], &f);
-            self.maps[2 * (i >> j) + 1] = <T as Monoid>::op(&self.maps[2 * (i >> j) + 1], &f);
-        });
+        for v in (1..=self.k).rev() {
+            self.push(i >> v);
+        }
         self.vals[i] = x.clone();
-        (1..=self.k).for_each(|j| {
-            self.vals[i >> j] = <T as MonoidAction2Monoid>::op(
-                &self.vals[2 * (i >> j)],
-                &self.vals[2 * (i >> j) + 1],
-            )
-        });
+        for v in 1..=self.k {
+            self.vals[i >> v] =
+                <V as Monoid>::op(&self.vals[2 * (i >> v)], &self.vals[2 * (i >> v) + 1])
+        }
     }
-    /// Return `op(a_l, ..., a_{r - 1})`.
-    /// This function has time complexity of O(log n).
-    pub fn range_fold(&mut self, range: impl RangeBounds<usize>) -> T::X {
-        use std::mem::replace;
+    /// Return the fold by op in `range`.
+    /// This function has a time complexity of O(log n).
+    pub fn range_fold(&mut self, range: impl std::ops::RangeBounds<usize>) -> <V as Monoid>::S {
         use std::ops::Bound::{Excluded, Included, Unbounded};
         let mut l = match range.start_bound() {
             Unbounded => 0,
-            Included(x) => *x,
-            Excluded(x) => x + 1,
+            Included(l) => *l,
+            Excluded(l) => l + 1,
         } + self.m;
         let mut r = match range.end_bound() {
             Unbounded => self.n,
-            Included(x) => x + 1,
-            Excluded(x) => *x,
+            Included(r) => r + 1,
+            Excluded(r) => *r,
         } + self.m;
+        assert!(l <= r);
         assert!(l < self.n + self.m);
-        assert!(l <= self.n + self.m);
-        (1..=self.k).rev().for_each(|i| {
-            if (l >> i) << i != l {
-                let f = replace(&mut self.maps[l >> i], <T as Monoid>::E);
-                T::apply(&mut self.vals[2 * (l >> i)], &f);
-                self.maps[2 * (l >> i)] = <T as Monoid>::op(&self.maps[2 * (l >> i)], &f);
-                T::apply(&mut self.vals[2 * (l >> i) + 1], &f);
-                self.maps[2 * (l >> i) + 1] = <T as Monoid>::op(&self.maps[2 * (l >> i) + 1], &f);
+        assert!(r <= self.n + self.m);
+        for v in (1..=self.k).rev() {
+            if (l >> v) << v != l {
+                self.push(l >> v);
             }
-            if (r >> i) << i != r {
-                let f = replace(&mut self.maps[(r - 1) >> i], <T as Monoid>::E);
-                T::apply(&mut self.vals[2 * ((r - 1) >> i)], &f);
-                self.maps[2 * ((r - 1) >> i)] =
-                    <T as Monoid>::op(&self.maps[2 * ((r - 1) >> i)], &f);
-                T::apply(&mut self.vals[2 * ((r - 1) >> i) + 1], &f);
-                self.maps[2 * ((r - 1) >> i) + 1] =
-                    <T as Monoid>::op(&self.maps[2 * ((r - 1) >> i) + 1], &f);
+            if (r >> v) << v != r {
+                self.push((r - 1) >> v);
             }
-        });
-        let mut left = <T as MonoidAction2Monoid>::E;
-        let mut right = <T as MonoidAction2Monoid>::E;
+        }
+        let mut left = <V as Monoid>::E;
+        let mut right = <V as Monoid>::E;
         while l < r {
             if l & 1 == 1 {
-                left = <T as MonoidAction2Monoid>::op(&left, &self.vals[l]);
+                left = <V as Monoid>::op(&left, &self.vals[l]);
                 l += 1;
             }
             if r & 1 == 1 {
                 r -= 1;
-                right = <T as MonoidAction2Monoid>::op(&self.vals[r], &right);
+                right = <V as Monoid>::op(&self.vals[r], &right);
             }
             l >>= 1;
             r >>= 1;
         }
-        <T as MonoidAction2Monoid>::op(&left, &right)
+        <V as Monoid>::op(&left, &right)
     }
-    /// forall i in [l, r), update from `a_i` to `ai * f := f(a_i)`.
+    /// Apply `f` to the value which index is in `range`.
     /// This function has a time complexity of O(log n).
-    pub fn range_apply(&mut self, range: impl RangeBounds<usize>, f: &T::S) {
-        use std::mem::replace;
+    pub fn range_apply(&mut self, range: impl std::ops::RangeBounds<usize>, f: &<F as Monoid>::S) {
         use std::ops::Bound::{Excluded, Included, Unbounded};
         let l = match range.start_bound() {
             Unbounded => 0,
-            Included(x) => *x,
-            Excluded(x) => x + 1,
+            Included(l) => *l,
+            Excluded(l) => l + 1,
         } + self.m;
         let r = match range.end_bound() {
             Unbounded => self.n,
-            Included(x) => x + 1,
-            Excluded(x) => *x,
+            Included(r) => r + 1,
+            Excluded(r) => *r,
         } + self.m;
+        assert!(l <= r);
         assert!(l < self.n + self.m);
-        assert!(l <= self.n + self.m);
-        (1..=self.k).rev().for_each(|i| {
-            if (l >> i) << i != l {
-                let g = replace(&mut self.maps[l >> i], <T as Monoid>::E);
-                T::apply(&mut self.vals[2 * (l >> i)], &g);
-                self.maps[2 * (l >> i)] = <T as Monoid>::op(&self.maps[2 * (l >> i)], &g);
-                T::apply(&mut self.vals[2 * (l >> i) + 1], &g);
-                self.maps[2 * (l >> i) + 1] = <T as Monoid>::op(&self.maps[2 * (l >> i) + 1], &g);
+        assert!(r <= self.n + self.m);
+        for v in (1..=self.k).rev() {
+            if (l >> v) << v != l {
+                self.push(l >> v);
             }
-            if (r >> i) << i != r {
-                let g = replace(&mut self.maps[(r - 1) >> i], <T as Monoid>::E);
-                T::apply(&mut self.vals[2 * ((r - 1) >> i)], &g);
-                self.maps[2 * ((r - 1) >> i)] =
-                    <T as Monoid>::op(&self.maps[2 * ((r - 1) >> i)], &g);
-                T::apply(&mut self.vals[2 * ((r - 1) >> i) + 1], &g);
-                self.maps[2 * ((r - 1) >> i) + 1] =
-                    <T as Monoid>::op(&self.maps[2 * ((r - 1) >> i) + 1], &g);
+            if (r >> v) << v != r {
+                self.push((r - 1) >> v);
             }
-        });
+        }
         {
             let (mut l, mut r) = (l, r);
             while l < r {
                 if l & 1 == 1 {
-                    T::apply(&mut self.vals[l], f);
-                    self.maps[l] = <T as Monoid>::op(&self.maps[l], f);
+                    A::apply(&mut self.vals[l], f);
+                    self.maps[l] = <F as Monoid>::op(&self.maps[l], f);
                     l += 1;
                 }
                 if r & 1 == 1 {
                     r -= 1;
-                    T::apply(&mut self.vals[r], f);
-                    self.maps[r] = <T as Monoid>::op(&self.maps[r], f);
+                    A::apply(&mut self.vals[r], f);
+                    self.maps[r] = <F as Monoid>::op(&self.maps[r], f);
                 }
                 l >>= 1;
                 r >>= 1;
             }
         }
-        (1..=self.k).for_each(|i| {
-            if (l >> i) << i != l {
-                self.vals[l >> i] = <T as MonoidAction2Monoid>::op(
-                    &self.vals[2 * (l >> i)],
-                    &self.vals[2 * (l >> i) + 1],
+        for v in 1..=self.k {
+            if (l >> v) << v != l {
+                self.vals[l >> v] =
+                    <V as Monoid>::op(&self.vals[2 * (l >> v)], &self.vals[2 * (l >> v) + 1]);
+            }
+            if (r >> v) << v != r {
+                self.vals[(r - 1) >> v] = <V as Monoid>::op(
+                    &self.vals[2 * ((r - 1) >> v)],
+                    &self.vals[2 * ((r - 1) >> v) + 1],
                 );
             }
-            if (r >> i) << i != r {
-                self.vals[(r - 1) >> i] = <T as MonoidAction2Monoid>::op(
-                    &self.vals[2 * ((r - 1) >> i)],
-                    &self.vals[2 * ((r - 1) >> i) + 1],
-                );
-            }
-        })
+        }
+    }
+    /// Push action of index `k`.
+    /// Apply its action and push to its children.
+    /// This function has a time complexity of O(1).
+    fn push(&mut self, k: usize) {
+        use std::mem::replace;
+        let f = replace(&mut self.maps[k], <F as Monoid>::E);
+        A::apply(&mut self.vals[2 * k], &f);
+        A::apply(&mut self.vals[2 * k + 1], &f);
+        self.maps[2 * k] = <F as Monoid>::op(&self.maps[2 * k], &f);
+        self.maps[2 * k + 1] = <F as Monoid>::op(&self.maps[2 * k + 1], &f);
     }
 }
-/// Constructor from iter to `DualSegTree`.
+/// Construct from iter to `lazysegtree`
 /// This function has a time complexity of O(n).
-use std::iter::FromIterator;
-impl<T: MonoidAction2Monoid> FromIterator<T::X> for LazySegTree<T> {
-    #[inline]
-    fn from_iter<I: IntoIterator<Item = T::X>>(iter: I) -> LazySegTree<T> {
+impl<V: Monoid, F: Monoid, A: Action<V, F>> std::iter::FromIterator<<V as Monoid>::S>
+    for LazySegTree<V, F, A>
+{
+    #[inline(always)]
+    fn from_iter<I: IntoIterator<Item = <V as Monoid>::S>>(iter: I) -> LazySegTree<V, F, A> {
         let a = iter.into_iter().collect::<Vec<_>>();
         let n = a.len();
         let m = n.next_power_of_two();
-        let mut vals = vec![<T as MonoidAction2Monoid>::E; 2 * m];
+        let mut vals = vec![<V as Monoid>::E; 2 * m];
         vals[m..m + n].clone_from_slice(&a);
-        (1..m)
-            .rev()
-            .for_each(|i| vals[i] = <T as MonoidAction2Monoid>::op(&vals[2 * i], &vals[2 * i + 1]));
+        for i in (1..m).rev() {
+            vals[i] = <V as Monoid>::op(&vals[2 * i], &vals[2 * i + 1]);
+        }
         Self {
             n,
             m,
             k: m.trailing_zeros(),
             vals,
-            maps: vec![<T as Monoid>::E; 2 * m],
+            maps: vec![<F as Monoid>::E; 2 * m],
+            _marker: std::marker::PhantomData,
         }
     }
 }

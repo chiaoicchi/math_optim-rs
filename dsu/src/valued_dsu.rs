@@ -1,24 +1,10 @@
-pub mod potential_dsu;
-pub mod valued_dsu;
-/// disjoint set union.
-///
-/// # Example
-///
-/// ```
-/// use dsu::DSU;
-/// let mut dsu = DSU::new(4);
-/// assert!(!dsu.is_same(0, 2));
-/// dsu.unite(0, 2);
-/// assert!(dsu.is_same(0, 2));
-/// dsu.unite(0, 1);
-/// assert!(dsu.is_same(1, 2));
-/// ```
-///
-pub struct DSU {
+use algebra::ComMonoid;
+pub struct ValuedDSU<T: ComMonoid> {
     parents: Vec<i32>,
     count: usize,
+    vals: Vec<T::S>,
 }
-impl DSU {
+impl<T: ComMonoid> ValuedDSU<T> {
     /// This is initializer of `DSU`.
     /// There are `n` singletons.
     /// This function has a time complexity of O(n).
@@ -26,6 +12,7 @@ impl DSU {
         Self {
             parents: vec![-1; n],
             count: n,
+            vals: vec![T::E; n],
         }
     }
     /// Return the representative of the set which contains `v`.
@@ -36,6 +23,17 @@ impl DSU {
             v = self.parents[v] as usize;
         }
         v
+    }
+    /// Return the value of `v`.
+    /// This function has a time complexity of O(log n).
+    pub fn val(&self, v: usize) -> &T::S {
+        &self.vals[self.rep(v)]
+    }
+    /// Update the value of `v`.
+    /// This function has a time complexity of O(log n).
+    pub fn update(&mut self, v: usize, x: &T::S) {
+        let v = self.rep(v);
+        self.vals[v] = x.clone();
     }
     /// Return whether `u` and `v` are in the same set.
     /// This function has a time complexity of O(log n).
@@ -57,6 +55,8 @@ impl DSU {
             }
             self.parents[u] += self.parents[v];
             self.parents[v] = u as i32;
+            self.vals[u] = T::op(&self.vals[u], &self.vals[v]);
+            self.vals[v] = T::E;
             self.count -= 1;
             true
         }

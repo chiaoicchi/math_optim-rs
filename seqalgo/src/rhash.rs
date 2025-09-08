@@ -5,7 +5,6 @@
 /// ```
 /// ```
 ///
-use std::ops::RangeBounds;
 pub const BASE: u64 = 1_025;
 pub const HASH: u64 = (1 << 61) - 1;
 fn _mulu128(a: &u64, b: &u64) -> u64 {
@@ -25,7 +24,7 @@ pub struct RHash<const BASE: u64, const HASH: u64> {
 impl<const BASE: u64, const HASH: u64> RHash<BASE, HASH> {
     /// Return hash of range.
     /// This function has a time complexity of O(1).
-    pub fn range_hash(&self, range: impl RangeBounds<usize>) -> u64 {
+    pub fn range_hash(&self, range: impl std::ops::RangeBounds<usize>) -> u64 {
         use std::ops::Bound::{Excluded, Included, Unbounded};
         let l = match range.start_bound() {
             Unbounded => 0,

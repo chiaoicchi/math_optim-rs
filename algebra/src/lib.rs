@@ -10,6 +10,7 @@ pub trait Monoid {
     const E: Self::S;
     fn op(lhs: &Self::S, rhs: &Self::S) -> Self::S;
 }
+pub trait ComMonoid: Monoid {}
 /// group trait.
 ///
 /// # Example
@@ -31,27 +32,3 @@ pub trait Group {
 /// ```
 ///
 pub trait Abelian: Group {}
-/// ring trait.
-///
-/// # Example
-///
-/// ```
-/// ```
-///
-pub trait Ring: Abelian + Monoid {}
-/// commutative ring trait.
-///
-/// # Example
-///
-/// ```
-/// ```
-///
-pub trait CR: Ring {}
-/// field trait.
-///
-/// # Example
-///
-/// ```
-/// ```
-///
-pub trait Field: Abelian + Group {}
